@@ -9,9 +9,8 @@ import os
 
 from dotenv import load_dotenv
 load_dotenv()
-
-
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")  
+import streamlit as st
+GROQ_API_KEY = st.secrets["GROQ_API_KEY"]
 
 if not GROQ_API_KEY:
     raise ValueError("GROQ_API_KEY environment variable not set.")
@@ -35,7 +34,7 @@ def query_groq(prompt):
 @st.cache_resource
 def load_model():
     if not os.path.exists("segment_model.pkl"):
-        df = pd.read_csv("Mall_Customers.csv")  # ✅ Local file
+        df = pd.read_csv("Mall_Customers.csv") 
         X = df[['Age', 'Annual Income (k$)', 'Spending Score (1-100)']]
         kmeans = KMeans(n_clusters=5, random_state=42)
         kmeans.fit(X)
